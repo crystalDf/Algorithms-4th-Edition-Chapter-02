@@ -52,7 +52,8 @@ public class SortCompare {
 
         StdOut.println(firstAlgorithmTotal + " " + secondAlgorithmTotal);
 
-        StdOut.printf("For %d random Doubles\n%s is ", n, firstAlgorithm);
+        StdOut.printf("For %d random Doubles\n%s is ",
+                n, firstAlgorithm);
         StdOut.printf("%.2f times faster than %s\n",
                 secondAlgorithmTotal / firstAlgorithmTotal, secondAlgorithm);
 
