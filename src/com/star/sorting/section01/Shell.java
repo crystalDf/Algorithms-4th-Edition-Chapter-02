@@ -3,18 +3,30 @@ package com.star.sorting.section01;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
-public class Insertion {
+public class Shell {
 
     public static void sort(Comparable[] array) {
 
         int n = array.length;
+        int h = 1;
 
-        for (int i = 1; i < n; i++) {
+        while (h < n / 3) {
 
-            for (int j = i; j >= 1 && less(array[j], array[j - 1]); j--) {
-                exchange(array, j, j - 1);
-            }
+            h = 3 * h + 1;
         }
+
+        while (h >= 1) {
+
+            for (int i = h; i < n; i++) {
+
+                for (int j = i; j >= h && less(array[j], array[j - h]); j -= h) {
+                    exchange(array, j, j - h);
+                }
+            }
+
+            h = h / 3;
+        }
+
     }
 
     private static boolean less(Comparable v, Comparable w) {
