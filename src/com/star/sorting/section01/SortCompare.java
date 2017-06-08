@@ -1,6 +1,7 @@
 package com.star.sorting.section01;
 
 
+import com.star.sorting.section02.Merge;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -19,6 +20,9 @@ public class SortCompare {
                 break;
             case "Shell":
                 Shell.sort(array);
+                break;
+            case "Merge":
+                Merge.sort(array);
                 break;
         }
 
