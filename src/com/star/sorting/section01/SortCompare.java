@@ -2,6 +2,7 @@ package com.star.sorting.section01;
 
 
 import com.star.sorting.section02.Merge;
+import com.star.sorting.section02.MergeBU;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -24,6 +25,8 @@ public class SortCompare {
             case "Merge":
                 Merge.sort(array);
                 break;
+            case "MergeBU":
+                MergeBU.sort(array);
         }
 
         return timer.elapsedTime();
