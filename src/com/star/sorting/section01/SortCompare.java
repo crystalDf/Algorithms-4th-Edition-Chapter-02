@@ -3,6 +3,8 @@ package com.star.sorting.section01;
 
 import com.star.sorting.section02.Merge;
 import com.star.sorting.section02.MergeBU;
+import com.star.sorting.section03.Quick;
+import com.star.sorting.section03.Quick3Way;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -27,6 +29,13 @@ public class SortCompare {
                 break;
             case "MergeBU":
                 MergeBU.sort(array);
+                break;
+            case "Quick":
+                Quick.sort(array);
+                break;
+            case "Quick3Way":
+                Quick3Way.sort(array);
+                break;
         }
 
         return timer.elapsedTime();
