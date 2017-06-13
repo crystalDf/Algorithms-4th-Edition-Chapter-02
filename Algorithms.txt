@@ -1,0 +1,5 @@
+2.1 com.star.sorting.section01.Selection
+2.2 com.star.sorting.section01.Insertion
+2.3 com.star.sorting.section01.Shell
+2.4 com.star.sorting.section02.Merge
+2.5 com.star.sorting.section03.Quick
