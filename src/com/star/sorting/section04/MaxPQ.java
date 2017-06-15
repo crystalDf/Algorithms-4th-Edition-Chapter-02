@@ -36,10 +36,18 @@ public class MaxPQ<Key extends Comparable<Key>> {
         return max;
     }
 
-    private void swim(int n) {
+    private static boolean less(Comparable v, Comparable w) {
+        return v.compareTo(w) < 0;
     }
 
-    private void exchange(int i, int i1) {
+    private void exchange(int i, int j) {
+
+        Key temp = pq[i];
+        pq[i] = pq[j];
+        pq[j] = temp;
+    }
+
+    private void swim(int n) {
     }
 
     private void sink(int i) {
