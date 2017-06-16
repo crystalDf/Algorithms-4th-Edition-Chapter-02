@@ -50,6 +50,7 @@ public class MaxPQ<Key extends Comparable<Key>> {
     private void swim(int i) {
 
         while (i > 1 && less(pq[i / 2], pq[i])) {
+
             exchange(i / 2, i);
             i = i / 2;
         }
@@ -58,6 +59,7 @@ public class MaxPQ<Key extends Comparable<Key>> {
     private void sink(int i) {
 
         while (2 * i <= n) {
+
             int j = 2 * i;
 
             if (j < n && less(pq[j], pq[j + 1])) {
