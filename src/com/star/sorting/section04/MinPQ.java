@@ -1,16 +1,16 @@
 package com.star.sorting.section04;
 
-public class MaxPQ<Key extends Comparable<Key>> {
+public class MinPQ<Key extends Comparable<Key>> {
 
     private Key[] priorityQueue;
     private int n;
 
-    public MaxPQ() {
+    public MinPQ() {
 
         priorityQueue = (Key[]) new Comparable[2];
     }
 
-    public MaxPQ(int capacity) {
+    public MinPQ(int capacity) {
 
         priorityQueue = (Key[]) new Comparable[capacity + 1];
     }
@@ -46,9 +46,9 @@ public class MaxPQ<Key extends Comparable<Key>> {
         swim(n);
     }
 
-    public Key deleteMax() {
+    public Key deleteMin() {
 
-        Key max = priorityQueue[1];
+        Key min = priorityQueue[1];
 
         exchange(1, n--);
         priorityQueue[n + 1] = null;
@@ -58,11 +58,11 @@ public class MaxPQ<Key extends Comparable<Key>> {
             resize(priorityQueue.length / 2);
         }
 
-        return max;
+        return min;
     }
 
     private boolean less(int i, int j) {
-        return priorityQueue[i].compareTo(priorityQueue[j]) < 0;
+        return priorityQueue[i].compareTo(priorityQueue[j]) > 0;
     }
 
     private void exchange(int i, int j) {

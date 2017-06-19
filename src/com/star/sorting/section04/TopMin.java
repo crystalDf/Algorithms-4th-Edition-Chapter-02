@@ -6,13 +6,13 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Transaction;
 
 
-public class TopMax {
+public class TopMin {
 
     public static void main(String[] args) {
 
-        int maxTopN = Integer.parseInt(args[0]);
+        int minTopN = Integer.parseInt(args[0]);
 
-        MinPQ<Transaction> priorityQueue = new MinPQ<>();
+        MaxPQ<Transaction> priorityQueue = new MaxPQ<>();
 
         In in = new In(args[1]);
 
@@ -20,9 +20,9 @@ public class TopMax {
 
             priorityQueue.insert(new Transaction(in.readLine()));
 
-            if (priorityQueue.size() > maxTopN) {
+            if (priorityQueue.size() > minTopN) {
 
-                priorityQueue.deleteMin();
+                priorityQueue.deleteMax();
             }
         }
 
@@ -30,7 +30,7 @@ public class TopMax {
 
         while (!priorityQueue.isEmpty()) {
 
-            stack.push(priorityQueue.deleteMin());
+            stack.push(priorityQueue.deleteMax());
         }
 
         for (Transaction transaction : stack) {
