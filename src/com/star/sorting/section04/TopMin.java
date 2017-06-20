@@ -20,7 +20,7 @@ public class TopMin {
 
             priorityQueue.insert(new Transaction(in.readLine()));
 
-            if (priorityQueue.size() > minTopN) {
+            if (priorityQueue.getSize() > minTopN) {
 
                 priorityQueue.deleteMax();
             }

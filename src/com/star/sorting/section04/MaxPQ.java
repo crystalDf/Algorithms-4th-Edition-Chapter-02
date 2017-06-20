@@ -1,18 +1,41 @@
 package com.star.sorting.section04;
 
-public class MaxPQ<Key extends Comparable<Key>> {
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
-    private Key[] priorityQueue;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class MaxPQ<Key extends Comparable<Key>> implements Iterable<Key> {
+
     private int n;
+    private Key[] priorityQueue;
+
+    public MaxPQ(int initCapacity) {
+
+        n = 0;
+        priorityQueue = (Key[]) new Comparable[initCapacity + 1];
+    }
 
     public MaxPQ() {
 
-        priorityQueue = (Key[]) new Comparable[2];
+        this(1);
     }
 
-    public MaxPQ(int capacity) {
+    public MaxPQ(Key[] keys) {
 
-        priorityQueue = (Key[]) new Comparable[capacity + 1];
+        n = keys.length;
+        priorityQueue = (Key[]) new Comparable[keys.length + 1];
+
+        for (int i = 0; i < n; i++) {
+            priorityQueue[i + 1] = keys[i];
+        }
+
+        for (int k = n / 2; k >= 1; k--) {
+            sink(k);
+        }
+
+        assert isMaxHeap();
     }
 
     public boolean isEmpty() {
@@ -20,14 +43,14 @@ public class MaxPQ<Key extends Comparable<Key>> {
         return n == 0;
     }
 
-    public int size() {
+    public int getSize() {
 
         return n;
     }
 
-    private void resize(int max) {
+    private void resize(int capacity) {
 
-        Key[] temp = (Key[]) new Comparable[max];
+        Key[] temp = (Key[]) new Comparable[capacity];
 
         for (int i = 1; i <= n; i++) {
             temp[i] = priorityQueue[i];
@@ -36,27 +59,44 @@ public class MaxPQ<Key extends Comparable<Key>> {
         priorityQueue = temp;
     }
 
+    public Key getMax() {
+
+        if (isEmpty()) {
+            throw new NoSuchElementException("Priority queue underflow");
+        }
+
+        return priorityQueue[1];
+    }
+
     public void insert(Key v) {
 
-        if ((n + 1) == priorityQueue.length) {
+        if (n == (priorityQueue.length - 1)) {
             resize(2 * priorityQueue.length);
         }
 
         priorityQueue[++n] = v;
         swim(n);
+
+        assert isMaxHeap();
     }
 
     public Key deleteMax() {
 
+        if (isEmpty()) {
+            throw new NoSuchElementException("Priority queue underflow");
+        }
+
         Key max = priorityQueue[1];
 
         exchange(1, n--);
-        priorityQueue[n + 1] = null;
         sink(1);
+        priorityQueue[n + 1] = null;
 
-        if ((n > 0) && ((n + 1) == (priorityQueue.length / 4))) {
+        if ((n > 0) && (n == ((priorityQueue.length - 1)/ 4))) {
             resize(priorityQueue.length / 2);
         }
+
+        assert isMaxHeap();
 
         return max;
     }
@@ -99,5 +139,79 @@ public class MaxPQ<Key extends Comparable<Key>> {
 
             k = j;
         }
+    }
+
+    private boolean isMaxHeap() {
+
+        return isMaxHeap(1);
+    }
+
+    private boolean isMaxHeap(int k) {
+
+        if (k > n) {
+            return true;
+        }
+
+        int left = 2 * k;
+        int right = 2 * k + 1;
+
+        if (left <= n && less(k, left)) {
+            return false;
+        }
+
+        if (right <= n && less(k, right)) {
+            return false;
+        }
+
+        return isMaxHeap(left) && isMaxHeap(right);
+    }
+
+    @Override
+    public Iterator<Key> iterator() {
+        return new HeapIterator();
+    }
+
+    private class HeapIterator implements Iterator<Key> {
+
+        private MaxPQ<Key> copy;
+
+        public HeapIterator() {
+
+            copy = new MaxPQ<>(getSize());
+
+            for (int i = 1; i <= n; i++) {
+                copy.insert(priorityQueue[i]);
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !copy.isEmpty();
+        }
+
+        @Override
+        public Key next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("Priority queue underflow");
+            }
+
+            return copy.deleteMax();
+        }
+    }
+
+    public static void main(String[] args) {
+        MaxPQ<String> priorityQueue =
+                new MaxPQ<>();
+
+        while (!StdIn.isEmpty()) {
+            String item = StdIn.readString();
+            if (!"-".equals(item)) {
+                priorityQueue.insert(item);
+            } else if (!priorityQueue.isEmpty()) {
+                StdOut.print(priorityQueue.deleteMax() + " ");
+            }
+        }
+
+        StdOut.println("(" + priorityQueue.getSize() + " left on priorityQueue)");
     }
 }

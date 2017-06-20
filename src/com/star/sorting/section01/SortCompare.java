@@ -5,8 +5,12 @@ import com.star.sorting.section02.Merge;
 import com.star.sorting.section02.MergeBU;
 import com.star.sorting.section03.Quick;
 import com.star.sorting.section03.Quick3Way;
+import edu.princeton.cs.algs4.Heap;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
+
+// Execution:    java SortCompare alg1 alg2 n trials
+// Exaple:       java SortCompare Selection Insertion 10000 100
 
 public class SortCompare {
 
@@ -35,6 +39,9 @@ public class SortCompare {
                 break;
             case "Quick3Way":
                 Quick3Way.sort(array);
+                break;
+            case "Heap":
+                Heap.sort(array);
                 break;
         }
 

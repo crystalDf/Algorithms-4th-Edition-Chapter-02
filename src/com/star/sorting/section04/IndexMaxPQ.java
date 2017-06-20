@@ -5,14 +5,14 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer> {
+public class IndexMaxPQ<Key extends Comparable<Key>> implements Iterable<Integer> {
 
     private int n;
     private Key[] priorityQueueGetValueFromIndex;
     private int[] priorityQueueGetIndexFromPosition;
     private int[] priorityQueueGetPositionFromIndex;
 
-    public IndexMinPQ(int initCapacity) {
+    public IndexMaxPQ(int initCapacity) {
 
         n = 0;
         priorityQueueGetValueFromIndex = (Key[]) new Comparable[initCapacity + 1];
@@ -20,7 +20,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
         priorityQueueGetPositionFromIndex = new int[initCapacity + 1];
     }
 
-    public IndexMinPQ() {
+    public IndexMaxPQ() {
 
         this(1);
     }
@@ -52,7 +52,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
         priorityQueueGetPositionFromIndex = tempPosition;
     }
 
-    public int getMinIndex() {
+    public int getMaxIndex() {
 
         if (isEmpty()) {
             throw new NoSuchElementException("Priority queue underflow");
@@ -61,7 +61,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
         return priorityQueueGetIndexFromPosition[1];
     }
 
-    public Key getMin() {
+    public Key getMax() {
 
         if (isEmpty()) {
             throw new NoSuchElementException("Priority queue underflow");
@@ -84,29 +84,29 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
         swim(n);
 
-        assert isMinHeap();
+        assert isMaxHeap();
     }
 
-    public int deleteMin() {
+    public int deleteMax() {
 
         if (isEmpty()) {
             throw new NoSuchElementException("Priority queue underflow");
         }
 
-        int minIndex = priorityQueueGetIndexFromPosition[1];
-        Key value = priorityQueueGetValueFromIndex[minIndex];
+        int maxIndex = priorityQueueGetIndexFromPosition[1];
+        Key value = priorityQueueGetValueFromIndex[maxIndex];
 
         exchange(1, n--);
         sink(1);
-        priorityQueueGetValueFromIndex[minIndex] = null;
+        priorityQueueGetValueFromIndex[maxIndex] = null;
 
         if ((n > 0) && (n == ((priorityQueueGetValueFromIndex.length - 1)/ 4))) {
 //            resize(priorityQueueGetValueFromIndex.length / 2);
         }
 
-        assert isMinHeap();
+        assert isMaxHeap();
 
-        return minIndex;
+        return maxIndex;
     }
 
     public void deleteIndex(int index) {
@@ -127,12 +127,12 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 //            resize(priorityQueueGetValueFromIndex.length / 2);
         }
 
-        assert isMinHeap();
+        assert isMaxHeap();
     }
 
-    private boolean greater(int i, int j) {
+    private boolean less(int i, int j) {
         return priorityQueueGetValueFromIndex[priorityQueueGetIndexFromPosition[i]]
-                .compareTo(priorityQueueGetValueFromIndex[priorityQueueGetIndexFromPosition[j]]) > 0;
+                .compareTo(priorityQueueGetValueFromIndex[priorityQueueGetIndexFromPosition[j]]) < 0;
     }
 
     private void exchange(int i, int j) {
@@ -147,7 +147,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
     private void swim(int k) {
 
-        while (k > 1 && greater(k / 2, k)) {
+        while (k > 1 && less(k / 2, k)) {
 
             exchange(k / 2, k);
             k = k / 2;
@@ -160,11 +160,11 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
             int j = 2 * k;
 
-            if (j < n && greater(j, j + 1)) {
+            if (j < n && less(j, j + 1)) {
                 j++;
             }
 
-            if (!greater(k, j)) {
+            if (!less(k, j)) {
                 break;
             }
 
@@ -174,12 +174,12 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
         }
     }
 
-    private boolean isMinHeap() {
+    private boolean isMaxHeap() {
 
-        return isMinHeap(1);
+        return isMaxHeap(1);
     }
 
-    private boolean isMinHeap(int k) {
+    private boolean isMaxHeap(int k) {
 
         if (k > n) {
             return true;
@@ -188,15 +188,15 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
         int left = 2 * k;
         int right = 2 * k + 1;
 
-        if (left <= n && greater(k, left)) {
+        if (left <= n && less(k, left)) {
             return false;
         }
 
-        if (right <= n && greater(k, right)) {
+        if (right <= n && less(k, right)) {
             return false;
         }
 
-        return isMinHeap(left) && isMinHeap(right);
+        return isMaxHeap(left) && isMaxHeap(right);
     }
 
     @Override
@@ -206,11 +206,11 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
     private class HeapIterator implements Iterator<Integer> {
 
-        private IndexMinPQ<Key> copy;
+        private IndexMaxPQ<Key> copy;
 
         public HeapIterator() {
 
-            copy = new IndexMinPQ<>(getSize());
+            copy = new IndexMaxPQ<>(getSize());
 
             for (int i = 1; i <= n; i++) {
                 copy.insert(priorityQueueGetIndexFromPosition[i],
@@ -229,7 +229,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
                 throw new NoSuchElementException("Priority queue underflow");
             }
 
-            return copy.deleteMin();
+            return copy.deleteMax();
         }
     }
 
@@ -238,7 +238,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
         String[] strings = { "it", "was", "the", "best", "of", "times",
                 "it", "was", "the", "worst" };
 
-        IndexMinPQ<String> priorityQueue = new IndexMinPQ<>();
+        IndexMaxPQ<String> priorityQueue = new IndexMaxPQ<>();
 
         for (int index = 0; index < strings.length; index++) {
 
@@ -247,7 +247,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
         while (!priorityQueue.isEmpty()) {
 
-            int index = priorityQueue.deleteMin();
+            int index = priorityQueue.deleteMax();
             StdOut.println(index + " " + strings[index]);
         }
         StdOut.println();
@@ -267,7 +267,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
         while (!priorityQueue.isEmpty()) {
 
-            int index = priorityQueue.deleteMin();
+            int index = priorityQueue.deleteMax();
             StdOut.println(index + " " + strings[index]);
         }
         StdOut.println();
