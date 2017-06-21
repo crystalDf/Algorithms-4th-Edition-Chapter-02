@@ -4,3 +4,4 @@
 2.4 com.star.sorting.section02.Merge
 2.5 com.star.sorting.section03.Quick
 2.6 com.star.sorting.section04.MaxPQ
+2.7 com.star.sorting.section04.Heap
